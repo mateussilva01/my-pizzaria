@@ -11,5 +11,16 @@ pizzaJson.map((item, index) => {
   pizzaItem.querySelector('.pizza-item--name').innerHTML = item.name;
   pizzaItem.querySelector('.pizza-item--desc').innerHTML = item.description;
 
+  //Chama o modal
+  pizzaItem.querySelector('a').addEventListener('click', (e) => {
+    e.preventDefault();
+
+    selectEl('.pizzaWindowArea').style.opacity = 0;
+    selectEl('.pizzaWindowArea').style.display = 'flex';
+    setTimeout(() => {
+      selectEl('.pizzaWindowArea').style.opacity = 1;
+    }, 200);
+  });
+
   selectEl('.pizza-area').append(pizzaItem);
 })

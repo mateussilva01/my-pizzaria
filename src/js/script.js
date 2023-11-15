@@ -68,3 +68,11 @@ selectEl('.pizzaInfo--qtmais').addEventListener('click', () => {
   modalQt++;
   selectEl('.pizzaInfo--qt').innerHTML = modalQt;
 });
+
+//Evento para selecionar uma das opções de tamanho do item
+selectAllEl('.pizzaInfo--size').forEach((size) => {
+  size.addEventListener('click', (e) => {
+    selectEl('.pizzaInfo--size.selected').classList.remove('selected');
+    size.classList.add('selected');
+  });
+});

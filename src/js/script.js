@@ -55,3 +55,16 @@ const closeModal = () => {
 selectAllEl('.pizzaInfo--cancelButton, .pizzaInfo--cancelMobileButton').forEach((item) => {
   item.addEventListener('click', closeModal);
 });
+
+//Evento para selecionar a quantidade de itens
+selectEl('.pizzaInfo--qtmenos').addEventListener('click', () => {
+  if (modalQt > 1) {
+    modalQt--;
+    selectEl('.pizzaInfo--qt').innerHTML = modalQt;
+  }
+});
+
+selectEl('.pizzaInfo--qtmais').addEventListener('click', () => {
+  modalQt++;
+  selectEl('.pizzaInfo--qt').innerHTML = modalQt;
+});

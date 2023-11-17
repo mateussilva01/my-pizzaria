@@ -85,11 +85,8 @@ selectAllEl('.pizzaInfo--size').forEach((size) => {
 selectEl('.pizzaInfo--addButton').addEventListener('click', () => {
   //Obtem o tamanho da pizza pela sua data-key
   let size = parseInt(selectEl('.pizzaInfo--size.selected').getAttribute('data-key'));
-
   let identifier = pizzaJson[modalKey].id+'@'+size;
-
   let key = cart.findIndex((item) => item.identifier == identifier);
-
   if (key > -1) {
     cart[key].qt += modalQt;
   } else {
@@ -100,5 +97,67 @@ selectEl('.pizzaInfo--addButton').addEventListener('click', () => {
       qt: modalQt
     });
   }
+  updateCart();
   closeModal();
 });
+
+//Evento para exibir o carrinho de compra com algum item adicionado e ocultar quando estiver vazio
+const updateCart = () => {
+  if (cart.length > 0) {
+    selectEl('aside').classList.add('show');
+    selectEl('.cart').innerHTML = '';
+
+    let subtotal = 0;
+    let desconto = 0;
+    let total = 0;
+
+    for(let i in cart) {
+      let pizzaItem = pizzaJson.find((item) => item.id == cart[i].id);
+      let cartItem = selectEl('.models .cart--item').cloneNode(true);
+      subtotal += pizzaItem.price * cart[i].qt;
+
+      let pizzaSizeName;
+      switch(cart[i].size) {
+        case 0:
+          pizzaSizeName = 'P';
+          break;
+        case 1:
+          pizzaSizeName = 'M';
+          break;
+        case 2:
+          pizzaSizeName = 'G';
+          break;
+      }
+
+      let pizzaName = `${pizzaItem.name} (${pizzaSizeName})`;
+
+      cartItem.querySelector('img').src = pizzaItem.img;
+      cartItem.querySelector('.cart--item-nome').innerHTML = pizzaName;
+      cartItem.querySelector('.cart--item--qt').innerHTML = cart[i].qt;
+      cartItem.querySelector('.cart--item-qtmenos').addEventListener('click', () => {
+        if(cart[i].qt > 1) {
+          cart[i].qt--;
+        } else {
+          cart.splice(i, 1);
+        }
+        updateCart();
+      });
+      cartItem.querySelector('.cart--item-qtmais').addEventListener('click', () => {
+        cart[i].qt++;
+        updateCart();
+      });
+
+      selectEl('.cart').append(cartItem);
+    }
+
+    desconto = subtotal * 0.1;
+    total = subtotal - desconto;
+
+    selectEl('.subtotal span:last-child').innerHTML = `R$ ${subtotal.toFixed(2)}`;
+    selectEl('.desconto span:last-child').innerHTML = `R$ ${desconto.toFixed(2)}`;
+    selectEl('.total span:last-child').innerHTML = `R$ ${total.toFixed(2)}`;
+
+  } else {
+    selectEl('aside').classList.remove('show');
+  }
+}

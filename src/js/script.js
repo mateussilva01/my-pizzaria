@@ -101,8 +101,21 @@ selectEl('.pizzaInfo--addButton').addEventListener('click', () => {
   closeModal();
 });
 
+//Versão mobile: Evento que chama o carrinho se tiver item adicionado
+selectEl('.menu-openner').addEventListener('click', () => {
+  if (cart.length > 0) {
+    selectEl('aside').style.left = '0';
+  }
+});
+
+selectEl('.menu-closer').addEventListener('click', () => {
+  selectEl('aside').style.left = '100vw';
+});
+
 //Evento para exibir o carrinho de compra com algum item adicionado e ocultar quando estiver vazio
 const updateCart = () => {
+  selectEl('.menu-openner span').innerHTML = cart.length;
+
   if (cart.length > 0) {
     selectEl('aside').classList.add('show');
     selectEl('.cart').innerHTML = '';
@@ -159,5 +172,6 @@ const updateCart = () => {
 
   } else {
     selectEl('aside').classList.remove('show');
+    selectEl('aside').style.left = '100vw';
   }
 }
